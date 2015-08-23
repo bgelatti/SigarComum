@@ -7,7 +7,19 @@ inherited FrmCadastroPadrao: TFrmCadastroPadrao
   ExplicitHeight = 280
   PixelsPerInch = 96
   TextHeight = 13
-  object dxBarManager1: TdxBarManager
+  object pnPrincipal: TPanel
+    Left = 0
+    Top = 50
+    Width = 629
+    Height = 192
+    Align = alClient
+    TabOrder = 4
+    ExplicitLeft = 232
+    ExplicitTop = 120
+    ExplicitWidth = 185
+    ExplicitHeight = 41
+  end
+  object bmControladorBarra: TdxBarManager
     AllowReset = False
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -31,7 +43,7 @@ inherited FrmCadastroPadrao: TFrmCadastroPadrao
       0
       50
       0)
-    object dxBarManager1Bar1: TdxBar
+    object bmBarraFerramenta: TdxBar
       AllowClose = False
       AllowCustomizing = False
       AllowQuickCustomizing = False
@@ -50,34 +62,34 @@ inherited FrmCadastroPadrao: TFrmCadastroPadrao
       ItemLinks = <
         item
           Visible = True
-          ItemName = 'dxBarLargeButton1'
+          ItemName = 'btnNovo'
         end
         item
           Visible = True
-          ItemName = 'dxBarLargeButton2'
+          ItemName = 'btnAlterar'
         end
         item
           Visible = True
-          ItemName = 'dxBarLargeButton3'
-        end
-        item
-          BeginGroup = True
-          Visible = True
-          ItemName = 'dxBarLargeButton4'
-        end
-        item
-          Visible = True
-          ItemName = 'dxBarLargeButton5'
+          ItemName = 'btnExcluir'
         end
         item
           BeginGroup = True
           Visible = True
-          ItemName = 'dxBarLargeButton6'
+          ItemName = 'btnSalvar'
+        end
+        item
+          Visible = True
+          ItemName = 'btnCancelar'
         end
         item
           BeginGroup = True
           Visible = True
-          ItemName = 'dxBarLargeButton7'
+          ItemName = 'btnPesquisar'
+        end
+        item
+          BeginGroup = True
+          Visible = True
+          ItemName = 'btnSair'
         end>
       NotDocking = [dsNone, dsLeft, dsRight, dsBottom]
       OneOnRow = True
@@ -86,50 +98,45 @@ inherited FrmCadastroPadrao: TFrmCadastroPadrao
       Visible = True
       WholeRow = True
     end
-    object dxBarLargeButton1: TdxBarLargeButton
+    object btnNovo: TdxBarLargeButton
       Action = ActNovo
       Category = 0
       AutoGrayScale = False
     end
-    object dxBarLargeButton2: TdxBarLargeButton
-      Action = ActAltera
+    object btnAlterar: TdxBarLargeButton
+      Action = ActAlterar
       Category = 0
       AutoGrayScale = False
     end
-    object dxBarLargeButton3: TdxBarLargeButton
-      Action = ActExclui
+    object btnExcluir: TdxBarLargeButton
+      Action = ActExcluir
       Category = 0
       AutoGrayScale = False
     end
-    object dxBarLargeButton4: TdxBarLargeButton
-      Action = ActSalva
+    object btnSalvar: TdxBarLargeButton
+      Action = ActSalvar
       Category = 0
       AutoGrayScale = False
     end
-    object dxBarLargeButton5: TdxBarLargeButton
-      Action = ActCancela
+    object btnCancelar: TdxBarLargeButton
+      Action = ActCancelar
       Category = 0
       AutoGrayScale = False
     end
-    object dxBarLargeButton6: TdxBarLargeButton
-      Action = ActPesquisa
+    object btnPesquisar: TdxBarLargeButton
+      Action = ActPesquisar
       Category = 0
       AutoGrayScale = False
     end
-    object dxBarLargeButton7: TdxBarLargeButton
-      Action = ActSai
+    object btnSair: TdxBarLargeButton
+      Action = ActSair
       Align = iaRight
       Category = 0
       AutoGrayScale = False
     end
-    object dxBarSpinEdit1: TdxBarSpinEdit
-      Caption = 'New Item'
-      Category = 0
-      Hint = 'New Item'
-      Visible = ivAlways
-    end
   end
-  object ActionList1: TActionList
+  object alAcoes: TActionList
+    Images = DmDao.ListaImagem24x24
     Left = 312
     Top = 128
     object ActNovo: TAction
@@ -137,35 +144,35 @@ inherited FrmCadastroPadrao: TFrmCadastroPadrao
       ImageIndex = 0
       OnExecute = ActNovoExecute
     end
-    object ActAltera: TAction
+    object ActAlterar: TAction
       Caption = 'Alterar'
       ImageIndex = 2
-      OnExecute = ActAlteraExecute
+      OnExecute = ActAlterarExecute
     end
-    object ActExclui: TAction
+    object ActExcluir: TAction
       Caption = 'Excluir'
       ImageIndex = 1
-      OnExecute = ActExcluiExecute
+      OnExecute = ActExcluirExecute
     end
-    object ActSalva: TAction
+    object ActSalvar: TAction
       Caption = 'Salvar'
       ImageIndex = 4
-      OnExecute = ActSalvaExecute
+      OnExecute = ActSalvarExecute
     end
-    object ActCancela: TAction
+    object ActCancelar: TAction
       Caption = 'Cancelar'
       ImageIndex = 5
-      OnExecute = ActCancelaExecute
+      OnExecute = ActCancelarExecute
     end
-    object ActPesquisa: TAction
+    object ActPesquisar: TAction
       Caption = 'Pesquisar'
       ImageIndex = 6
-      OnExecute = ActPesquisaExecute
+      OnExecute = ActPesquisarExecute
     end
-    object ActSai: TAction
+    object ActSair: TAction
       Caption = 'Sair'
       ImageIndex = 3
-      OnExecute = ActSaiExecute
+      OnExecute = ActSairExecute
     end
   end
 end

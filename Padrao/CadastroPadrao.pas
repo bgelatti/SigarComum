@@ -5,38 +5,40 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, TelaPadrao, Table, System.Actions,
-  Vcl.ActnList, dxBar, cxClasses, uDmDao, dxBarExtItems;
+  Vcl.ActnList, dxBar, cxClasses, uDmDao, dxBarExtItems, Data.DB, Vcl.ExtCtrls;
 
 type
   TFrmCadastroPadrao = class(TFrmTelaPadrao)
-    dxBarManager1: TdxBarManager;
-    dxBarManager1Bar1: TdxBar;
-    dxBarLargeButton1: TdxBarLargeButton;
-    dxBarLargeButton2: TdxBarLargeButton;
-    dxBarLargeButton3: TdxBarLargeButton;
-    dxBarLargeButton4: TdxBarLargeButton;
-    dxBarLargeButton5: TdxBarLargeButton;
-    dxBarLargeButton6: TdxBarLargeButton;
-    dxBarLargeButton7: TdxBarLargeButton;
-    ActionList1: TActionList;
+    bmControladorBarra: TdxBarManager;
+    bmBarraFerramenta: TdxBar;
+    btnNovo: TdxBarLargeButton;
+    btnAlterar: TdxBarLargeButton;
+    btnExcluir: TdxBarLargeButton;
+    btnSalvar: TdxBarLargeButton;
+    btnCancelar: TdxBarLargeButton;
+    btnPesquisar: TdxBarLargeButton;
+    btnSair: TdxBarLargeButton;
+    alAcoes: TActionList;
     ActNovo: TAction;
-    ActAltera: TAction;
-    ActExclui: TAction;
-    ActSalva: TAction;
-    ActCancela: TAction;
-    ActPesquisa: TAction;
-    ActSai: TAction;
-    dxBarSpinEdit1: TdxBarSpinEdit;
+    ActAlterar: TAction;
+    ActExcluir: TAction;
+    ActSalvar: TAction;
+    ActCancelar: TAction;
+    ActPesquisar: TAction;
+    ActSair: TAction;
+    pnPrincipal: TPanel;
     procedure ActNovoExecute(Sender: TObject);
-    procedure ActAlteraExecute(Sender: TObject);
-    procedure ActSalvaExecute(Sender: TObject);
-    procedure ActCancelaExecute(Sender: TObject);
-    procedure ActSaiExecute(Sender: TObject);
+    procedure ActAlterarExecute(Sender: TObject);
+    procedure ActSalvarExecute(Sender: TObject);
+    procedure ActCancelarExecute(Sender: TObject);
+    procedure ActSairExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure ActPesquisaExecute(Sender: TObject);
-    procedure ActExcluiExecute(Sender: TObject);
+    procedure ActPesquisarExecute(Sender: TObject);
+    procedure ActExcluirExecute(Sender: TObject);
   private
     FTable: TTable;
+    FInserting: Boolean;
+    FUpdating: Boolean;
     procedure SetTable(const Value: TTable);
     procedure SetBrowseMode;
     procedure SetEditMode;
@@ -49,7 +51,9 @@ type
     procedure SetTableFields; virtual; abstract;
     procedure SetFieldsTable; virtual; abstract;
     procedure CleanFields; virtual; abstract;
-    function VerifyID: Integer; virtual; abstract;
+    procedure SetFieldsFromSearch(ADataSet: TDataSet); virtual; abstract;
+    procedure GetPk; virtual; abstract;
+    function VerifyId: Integer; virtual; abstract;
   end;
 
 var
@@ -61,50 +65,71 @@ implementation
 
 { TFrmCadastroPadrao }
 
-procedure TFrmCadastroPadrao.ActAlteraExecute(Sender: TObject);
+procedure TFrmCadastroPadrao.ActAlterarExecute(Sender: TObject);
 begin
   inherited;
   SetEditMode;
+  FInserting := False;
+  FUpdating  := True;
 end;
 
-procedure TFrmCadastroPadrao.ActCancelaExecute(Sender: TObject);
+procedure TFrmCadastroPadrao.ActCancelarExecute(Sender: TObject);
 begin
   inherited;
+  if FUpdating then
+  begin
+    SetFieldsTable;
+  end
+  else
+  begin
+    CleanFields;
+  end;
   SetBrowseMode;
-  SetFieldsTable;
+  FInserting := False;
+  FUpdating  := False;
 end;
 
-procedure TFrmCadastroPadrao.ActExcluiExecute(Sender: TObject);
+procedure TFrmCadastroPadrao.ActExcluirExecute(Sender: TObject);
 begin
   inherited;
-  ConnectionVerify;
-  RegDelete;
+  if Application.MessageBox('Deseja realmente excluir este registro?', 'Atenção',
+                            MB_APPLMODAL + MB_YESNO + MB_ICONQUESTION) = ID_YES then
+  begin
+    ConnectionVerify;
+    RegDelete;
+    CleanFields;
+    SetBrowseMode;
+  end;
 end;
 
 procedure TFrmCadastroPadrao.ActNovoExecute(Sender: TObject);
 begin
   inherited;
   SetEditMode;
+  FInserting := True;
+  FUpdating  := False;
 end;
 
-procedure TFrmCadastroPadrao.ActPesquisaExecute(Sender: TObject);
+procedure TFrmCadastroPadrao.ActPesquisarExecute(Sender: TObject);
+var
+  vDataSet: TDataSet;
 begin
   inherited;
-  SetFieldsTable;
+  SetFieldsFromSearch(vDataSet);
 end;
 
-procedure TFrmCadastroPadrao.ActSaiExecute(Sender: TObject);
+procedure TFrmCadastroPadrao.ActSairExecute(Sender: TObject);
 begin
   inherited;
   Close;
 end;
 
-procedure TFrmCadastroPadrao.ActSalvaExecute(Sender: TObject);
+procedure TFrmCadastroPadrao.ActSalvarExecute(Sender: TObject);
 begin
   inherited;
   SetTableFields;
 
-  if VerifyID > 0 then
+  if FInserting then
   begin
     ConnectionVerify;
     RegInsert;
@@ -115,6 +140,8 @@ begin
     RegUpdate;
   end;
   SetBrowseMode;
+  FInserting := False;
+  FUpdating  := False;
 end;
 
 procedure TFrmCadastroPadrao.ConnectionVerify;
@@ -126,8 +153,8 @@ begin
     except
       on E: Exception do
       begin
-        Application.MessageBox(PWideChar('Verifique a conexão com o banco de dados!' +
-                               #13 + e.message), 'Erro', MB_APPLMODAL + MB_OK + MB_ICONERROR);
+        raise Exception.Create('Verifique a conexão com o banco de dados!' +
+                               #13 + e.message);
       end;
     end;
   end;
@@ -137,6 +164,8 @@ procedure TFrmCadastroPadrao.FormCreate(Sender: TObject);
 begin
   inherited;
   SetBrowseMode;
+  FInserting := False;
+  FUpdating  := False;
 end;
 
 procedure TFrmCadastroPadrao.RegDelete;
@@ -148,9 +177,8 @@ begin
   except
     on E: Exception do
     begin
-      Application.MessageBox(PWideChar('Erro ao excluir!' + #13 + e.message),
-                            'Erro', MB_APPLMODAL + MB_OK + MB_ICONERROR);
       DmDao.Transaction.RollBack;
+      raise Exception.Create('Erro ao excluir!' + #13 + e.message);
     end;
   end;
 end;
@@ -159,38 +187,40 @@ procedure TFrmCadastroPadrao.RegInsert;
 begin
   DmDao.Transaction.StartTransaction;
   try
+    GetPk;
     DmDao.Dao.Insert(FTable);
     DmDao.Transaction.Commit;
   except
     on E: Exception do
     begin
-      Application.MessageBox(PWideChar('Erro ao inserir!' + #13 + e.message),
-                            'Erro', MB_APPLMODAL + MB_OK + MB_ICONERROR);
       DmDao.Transaction.RollBack;
+      raise Exception.Create('Erro ao inserir!' + #13 + e.message);
     end;
   end;
 end;
 
 procedure TFrmCadastroPadrao.SetBrowseMode;
 begin
-  ActNovo.Enabled     := True;
-  ActAltera.Enabled   := VerifyID > 0;
-  ActExclui.Enabled   := VerifyID > 0;
-  ActSalva.Enabled    := False;
-  ActCancela.Enabled  := False;
-  ActPesquisa.Enabled := True;
-  ActSai.Enabled      := True;
+  ActNovo.Enabled      := True;
+  ActAlterar.Enabled   := VerifyID > 0;
+  ActExcluir.Enabled   := VerifyID > 0;
+  ActSalvar.Enabled    := False;
+  ActCancelar.Enabled  := False;
+  ActPesquisar.Enabled := True;
+  ActSair.Enabled      := True;
+  pnPrincipal.Enabled  := False;
 end;
 
 procedure TFrmCadastroPadrao.SetEditMode;
 begin
-  ActNovo.Enabled     := False;
-  ActAltera.Enabled   := False;
-  ActExclui.Enabled   := False;
-  ActSalva.Enabled    := True;
-  ActCancela.Enabled  := True;
-  ActPesquisa.Enabled := False;
-  ActSai.Enabled      := False;
+  ActNovo.Enabled      := False;
+  ActAlterar.Enabled   := False;
+  ActExcluir.Enabled   := False;
+  ActSalvar.Enabled    := True;
+  ActCancelar.Enabled  := True;
+  ActPesquisar.Enabled := False;
+  ActSair.Enabled      := False;
+  pnPrincipal.Enabled  := True;
 end;
 
 procedure TFrmCadastroPadrao.SetTable(const Value: TTable);
@@ -207,9 +237,8 @@ begin
   except
     on E: Exception do
     begin
-      Application.MessageBox(PWideChar('Erro ao alterar!' + #13 + e.message),
-                            'Erro', MB_APPLMODAL + MB_OK + MB_ICONERROR);
       DmDao.Transaction.RollBack;
+      raise Exception.Create('Erro ao alterar!' + #13 + e.message);
     end;
   end;
 end;
