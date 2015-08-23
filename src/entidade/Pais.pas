@@ -9,14 +9,14 @@ type
   [AttTable('COMUM.PAIS')]
   TPais = class(TTable)
   private
-    FId: Integer;
     FNome: string;
-    procedure SetId(const Value: Integer);
+    FId: Double;
     procedure SetNome(const Value: string);
+    procedure SetId(const Value: Double);
   public
     [AttPK]
     [AttNotNull('Código do Pais')]
-    property Id: Integer read FId write SetId;
+    property Id: Double read FId write SetId;
     [AttNotNull('Nome do Pais')]
     property Nome: string read FNome write SetNome;
   end;
@@ -25,7 +25,7 @@ implementation
 
 { TPais }
 
-procedure TPais.SetId(const Value: Integer);
+procedure TPais.SetId(const Value: Double);
 begin
   FId := Value;
 end;

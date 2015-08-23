@@ -33,8 +33,8 @@ type
     procedure ActCancelarExecute(Sender: TObject);
     procedure ActSairExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure ActPesquisarExecute(Sender: TObject);
     procedure ActExcluirExecute(Sender: TObject);
+    procedure ActPesquisarExecute(Sender: TObject);
   private
     FTable: TTable;
     FInserting: Boolean;
@@ -51,15 +51,18 @@ type
     procedure SetTableFields; virtual; abstract;
     procedure SetFieldsTable; virtual; abstract;
     procedure CleanFields; virtual; abstract;
-    procedure SetFieldsFromSearch(ADataSet: TDataSet); virtual; abstract;
+    procedure SetFieldsFromSearch; virtual; abstract;
     procedure GetPk; virtual; abstract;
-    function VerifyId: Integer; virtual; abstract;
+    function VerifyId: Double; virtual; abstract;
   end;
 
 var
   FrmCadastroPadrao: TFrmCadastroPadrao;
 
 implementation
+
+uses
+  PesquisaGenerica;
 
 {$R *.dfm}
 
@@ -111,11 +114,13 @@ begin
 end;
 
 procedure TFrmCadastroPadrao.ActPesquisarExecute(Sender: TObject);
-var
-  vDataSet: TDataSet;
 begin
   inherited;
-  SetFieldsFromSearch(vDataSet);
+  if FTable <> nil then
+  begin
+    SetFieldsFromSearch;
+  end;
+  SetBrowseMode;
 end;
 
 procedure TFrmCadastroPadrao.ActSairExecute(Sender: TObject);

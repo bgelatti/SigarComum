@@ -1,28 +1,35 @@
 inherited FrmPesquisaGenerica: TFrmPesquisaGenerica
+  BorderIcons = []
   Caption = 'Pesquisa'
-  ClientHeight = 318
-  ClientWidth = 562
-  ExplicitWidth = 578
-  ExplicitHeight = 356
+  ClientHeight = 463
+  ClientWidth = 772
+  FormStyle = fsNormal
+  Visible = False
+  ExplicitWidth = 788
+  ExplicitHeight = 501
   PixelsPerInch = 96
   TextHeight = 13
   object cxgPesquisa: TcxGrid
     Left = 0
     Top = 0
-    Width = 479
-    Height = 318
+    Width = 733
+    Height = 463
     Align = alClient
     TabOrder = 0
-    ExplicitLeft = 104
-    ExplicitTop = 32
-    ExplicitWidth = 250
-    ExplicitHeight = 200
+    ExplicitWidth = 479
+    ExplicitHeight = 318
     object cxgvPesquisa: TcxGridDBTableView
+      OnDblClick = cxgvPesquisaDblClick
       Navigator.Buttons.CustomButtons = <>
       DataController.DataSource = dsPesquisa
       DataController.Summary.DefaultGroupSummaryItems = <>
       DataController.Summary.FooterSummaryItems = <>
       DataController.Summary.SummaryGroups = <>
+      OptionsData.CancelOnExit = False
+      OptionsData.Deleting = False
+      OptionsData.DeletingConfirmation = False
+      OptionsData.Editing = False
+      OptionsData.Inserting = False
     end
     object cxgPesquisaLevel1: TcxGridLevel
       GridView = cxgvPesquisa
@@ -41,13 +48,14 @@ inherited FrmPesquisaGenerica: TFrmPesquisaGenerica
       2)
     Categories.Visibles = (
       True)
+    ImageOptions.LargeImages = DmDao.ListaImagem24x24
     PopupMenuLinks = <>
     UseSystemFont = True
     Left = 424
     Top = 144
     DockControlHeights = (
       0
-      83
+      39
       0
       0)
     object dxBarManager1Bar1: TdxBar
@@ -80,10 +88,9 @@ inherited FrmPesquisaGenerica: TFrmPesquisaGenerica
       WholeRow = True
     end
     object dxBarLargeButton1: TdxBarLargeButton
-      Caption = 'New Button'
+      Action = ActSair
       Category = 0
-      Hint = 'New Button'
-      Visible = ivAlways
+      AutoGrayScale = False
     end
   end
   object ListaAcao: TActionList

@@ -14,10 +14,6 @@ inherited FrmCadastroPadrao: TFrmCadastroPadrao
     Height = 192
     Align = alClient
     TabOrder = 4
-    ExplicitLeft = 232
-    ExplicitTop = 120
-    ExplicitWidth = 185
-    ExplicitHeight = 41
   end
   object bmControladorBarra: TdxBarManager
     AllowReset = False

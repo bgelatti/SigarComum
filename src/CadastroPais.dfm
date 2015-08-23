@@ -9,8 +9,6 @@ inherited FrmCadastroPais: TFrmCadastroPais
   inherited pnPrincipal: TPanel
     Width = 405
     Height = 54
-    ExplicitLeft = 0
-    ExplicitTop = 50
     ExplicitWidth = 405
     ExplicitHeight = 54
     object cxLabel1: TcxLabel

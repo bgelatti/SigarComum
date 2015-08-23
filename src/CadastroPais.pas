@@ -15,15 +15,16 @@ type
     edtNome: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure ActNovoExecute(Sender: TObject);
+    procedure ActPesquisarExecute(Sender: TObject);
   private
     { Private declarations }
   public
     procedure SetTableFields; override;
     procedure SetFieldsTable; override;
     procedure CleanFields; override;
-    procedure SetFieldsFromSearch(ADataSet: TDataSet); override;
+    procedure SetFieldsFromSearch; override;
     procedure GetPk; override;
-    function VerifyId: Integer; override;
+    function VerifyId: Double; override;
   end;
 
 var
@@ -32,7 +33,7 @@ var
 implementation
 
 uses
-  uDmDao;
+  uDmDao, PesquisaGenerica;
 
 {$R *.dfm}
 
@@ -42,6 +43,12 @@ procedure TFrmCadastroPais.ActNovoExecute(Sender: TObject);
 begin
   inherited;
   edtNome.SetFocus;
+end;
+
+procedure TFrmCadastroPais.ActPesquisarExecute(Sender: TObject);
+begin
+  Table := TFrmPesquisaGenerica.SearchTable(Table);
+  inherited;
 end;
 
 procedure TFrmCadastroPais.CleanFields;
@@ -64,7 +71,7 @@ begin
   TPais(Table).Id := DmDao.Dao.GetID(Table, 'id');
 end;
 
-procedure TFrmCadastroPais.SetFieldsFromSearch(ADataSet: TDataSet);
+procedure TFrmCadastroPais.SetFieldsFromSearch;
 begin
   inherited;
   edtNome.Text := TPais(Table).Nome;
@@ -82,7 +89,7 @@ begin
   TPais(Table).Nome := edtNome.Text;
 end;
 
-function TFrmCadastroPais.VerifyId: Integer;
+function TFrmCadastroPais.VerifyId: Double;
 begin
   Result := TPais(Table).Id;
 end;
