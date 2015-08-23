@@ -111,6 +111,7 @@ begin
   SetEditMode;
   FInserting := True;
   FUpdating  := False;
+  CleanFields;
 end;
 
 procedure TFrmCadastroPadrao.ActPesquisarExecute(Sender: TObject);
