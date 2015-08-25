@@ -18,7 +18,7 @@ type
     btnCancelar: TdxBarLargeButton;
     btnPesquisar: TdxBarLargeButton;
     btnSair: TdxBarLargeButton;
-    alAcoes: TActionList;
+    alAcoesCadastro: TActionList;
     ActNovo: TAction;
     ActAlterar: TAction;
     ActExcluir: TAction;
@@ -27,6 +27,7 @@ type
     ActPesquisar: TAction;
     ActSair: TAction;
     pnPrincipal: TPanel;
+    alAcoesGerais: TActionList;
     procedure ActNovoExecute(Sender: TObject);
     procedure ActAlterarExecute(Sender: TObject);
     procedure ActSalvarExecute(Sender: TObject);
@@ -40,20 +41,20 @@ type
     FInserting: Boolean;
     FUpdating: Boolean;
     procedure SetTable(const Value: TTable);
-    procedure SetBrowseMode;
-    procedure SetEditMode;
-    procedure ConnectionVerify;
     procedure RegInsert;
     procedure RegUpdate;
     procedure RegDelete;
   public
-    property Table: TTable read FTable write SetTable;
+    procedure ConnectionVerify;
+    procedure SetBrowseMode;
+    procedure SetEditMode;
     procedure SetTableFields; virtual; abstract;
     procedure SetFieldsTable; virtual; abstract;
     procedure CleanFields; virtual; abstract;
     procedure SetFieldsFromSearch; virtual; abstract;
     procedure GetPk; virtual; abstract;
     function VerifyId: Double; virtual; abstract;
+    property Table: TTable read FTable write SetTable;
   end;
 
 var
@@ -117,6 +118,8 @@ end;
 procedure TFrmCadastroPadrao.ActPesquisarExecute(Sender: TObject);
 begin
   inherited;
+  ConnectionVerify;
+  FTable := TFrmPesquisaGenerica.SearchTable(FTable);
   if FTable <> nil then
   begin
     SetFieldsFromSearch;

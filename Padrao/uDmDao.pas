@@ -9,6 +9,7 @@ uses
 type
   TDmDao = class(TDataModule)
     ListaImagem24x24: TcxImageList;
+    ListaImagem16x16: TcxImageList;
   private
     { Private declarations }
   public

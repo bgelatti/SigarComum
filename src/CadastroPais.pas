@@ -7,15 +7,14 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, CadastroPadrao, System.Actions,
   Vcl.ActnList, dxBar, cxClasses, Data.DB, Pais, cxGraphics, cxControls,
   cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit, Vcl.StdCtrls,
-  cxLabel, Vcl.ExtCtrls;
+  cxLabel, Vcl.ExtCtrls, cxTextEdit;
 
 type
   TFrmCadastroPais = class(TFrmCadastroPadrao)
     cxLabel1: TcxLabel;
-    edtNome: TEdit;
+    edtNome: TcxTextEdit;
     procedure FormCreate(Sender: TObject);
     procedure ActNovoExecute(Sender: TObject);
-    procedure ActPesquisarExecute(Sender: TObject);
   private
     { Private declarations }
   public
@@ -45,12 +44,6 @@ begin
   edtNome.SetFocus;
 end;
 
-procedure TFrmCadastroPais.ActPesquisarExecute(Sender: TObject);
-begin
-  Table := TFrmPesquisaGenerica.SearchTable(Table);
-  inherited;
-end;
-
 procedure TFrmCadastroPais.CleanFields;
 begin
   inherited;
@@ -68,6 +61,7 @@ end;
 procedure TFrmCadastroPais.GetPk;
 begin
   inherited;
+  ConnectionVerify;
   TPais(Table).Id := DmDao.Dao.GetID(Table, 'id');
 end;
 

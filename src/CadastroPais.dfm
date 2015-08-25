@@ -16,12 +16,14 @@ inherited FrmCadastroPais: TFrmCadastroPais
       Top = 16
       Caption = 'Nome:'
     end
-    object edtNome: TEdit
+    object edtNome: TcxTextEdit
       Left = 57
       Top = 15
-      Width = 312
-      Height = 21
+      AutoSize = False
+      Properties.CharCase = ecUpperCase
       TabOrder = 1
+      Height = 21
+      Width = 328
     end
   end
   inherited bmControladorBarra: TdxBarManager
@@ -33,8 +35,12 @@ inherited FrmCadastroPais: TFrmCadastroPais
       50
       0)
   end
-  inherited alAcoes: TActionList
+  inherited alAcoesCadastro: TActionList
     Left = 264
+    Top = 16
+  end
+  inherited alAcoesGerais: TActionList
+    Left = 320
     Top = 16
   end
 end

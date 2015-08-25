@@ -131,10 +131,10 @@ inherited FrmCadastroPadrao: TFrmCadastroPadrao
       AutoGrayScale = False
     end
   end
-  object alAcoes: TActionList
+  object alAcoesCadastro: TActionList
     Images = DmDao.ListaImagem24x24
-    Left = 312
-    Top = 128
+    Left = 296
+    Top = 80
     object ActNovo: TAction
       Caption = 'Novo'
       ImageIndex = 0
@@ -170,5 +170,10 @@ inherited FrmCadastroPadrao: TFrmCadastroPadrao
       ImageIndex = 3
       OnExecute = ActSairExecute
     end
+  end
+  object alAcoesGerais: TActionList
+    Images = DmDao.ListaImagem16x16
+    Left = 240
+    Top = 80
   end
 end
