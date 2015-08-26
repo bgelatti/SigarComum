@@ -12,12 +12,17 @@ inherited FrmPesquisaGenerica: TFrmPesquisaGenerica
   object cxgPesquisa: TcxGrid
     Left = 0
     Top = 0
-    Width = 733
+    Width = 737
     Height = 463
     Align = alClient
+    BevelInner = bvNone
+    BevelOuter = bvNone
     TabOrder = 0
-    ExplicitWidth = 479
-    ExplicitHeight = 318
+    LevelTabs.Style = 8
+    LookAndFeel.Kind = lfFlat
+    LookAndFeel.NativeStyle = False
+    LookAndFeel.SkinName = 'Lilian'
+    ExplicitLeft = 8
     object cxgvPesquisa: TcxGridDBTableView
       OnDblClick = cxgvPesquisaDblClick
       Navigator.Buttons.CustomButtons = <>
@@ -25,11 +30,17 @@ inherited FrmPesquisaGenerica: TFrmPesquisaGenerica
       DataController.Summary.DefaultGroupSummaryItems = <>
       DataController.Summary.FooterSummaryItems = <>
       DataController.Summary.SummaryGroups = <>
+      DateTimeHandling.MonthFormat = 'mm'
+      DateTimeHandling.YearFormat = 'yyyy'
+      DateTimeHandling.DateFormat = 'dd/mm/yyyy'
+      DateTimeHandling.HourFormat = 'hh:nn'
+      FilterRow.InfoText = 'Clique aqui para definir um filtro'
       OptionsData.CancelOnExit = False
       OptionsData.Deleting = False
       OptionsData.DeletingConfirmation = False
       OptionsData.Editing = False
       OptionsData.Inserting = False
+      OptionsView.NoDataToDisplayInfoText = 'Sem Registros'
     end
     object cxgPesquisaLevel1: TcxGridLevel
       GridView = cxgvPesquisa
@@ -49,13 +60,14 @@ inherited FrmPesquisaGenerica: TFrmPesquisaGenerica
     Categories.Visibles = (
       True)
     ImageOptions.LargeImages = DmDao.ListaImagem24x24
+    LookAndFeel.SkinName = 'Lilian'
     PopupMenuLinks = <>
     UseSystemFont = True
     Left = 424
     Top = 144
     DockControlHeights = (
       0
-      39
+      35
       0
       0)
     object dxBarManager1Bar1: TdxBar
@@ -63,6 +75,7 @@ inherited FrmPesquisaGenerica: TFrmPesquisaGenerica
       AllowCustomizing = False
       AllowQuickCustomizing = False
       AllowReset = False
+      BorderStyle = bbsNone
       Caption = 'BarraLateral'
       CaptionButtons = <>
       DockedDockingStyle = dsRight
@@ -100,6 +113,7 @@ inherited FrmPesquisaGenerica: TFrmPesquisaGenerica
     object ActSair: TAction
       Caption = 'Sair'
       ImageIndex = 3
+      ShortCut = 27
       OnExecute = ActSairExecute
     end
   end

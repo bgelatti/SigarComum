@@ -9,11 +9,14 @@ inherited FrmCadastroPadrao: TFrmCadastroPadrao
   TextHeight = 13
   object pnPrincipal: TPanel
     Left = 0
-    Top = 50
+    Top = 46
     Width = 629
-    Height = 192
+    Height = 196
     Align = alClient
+    BevelOuter = bvNone
     TabOrder = 4
+    ExplicitTop = 50
+    ExplicitHeight = 192
   end
   object bmControladorBarra: TdxBarManager
     AllowReset = False
@@ -30,6 +33,7 @@ inherited FrmCadastroPadrao: TFrmCadastroPadrao
     Categories.Visibles = (
       True)
     ImageOptions.LargeImages = DmDao.ListaImagem24x24
+    LookAndFeel.SkinName = 'Lilian'
     PopupMenuLinks = <>
     UseSystemFont = True
     Left = 240
@@ -37,13 +41,14 @@ inherited FrmCadastroPadrao: TFrmCadastroPadrao
     DockControlHeights = (
       0
       0
-      50
+      46
       0)
     object bmBarraFerramenta: TdxBar
       AllowClose = False
       AllowCustomizing = False
       AllowQuickCustomizing = False
       AllowReset = False
+      BorderStyle = bbsNone
       Caption = 'ToolBar'
       CaptionButtons = <>
       DockedDockingStyle = dsTop
@@ -168,6 +173,7 @@ inherited FrmCadastroPadrao: TFrmCadastroPadrao
     object ActSair: TAction
       Caption = 'Sair'
       ImageIndex = 3
+      ShortCut = 27
       OnExecute = ActSairExecute
     end
   end

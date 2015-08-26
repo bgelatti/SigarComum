@@ -9,7 +9,20 @@ uses
   cxData, cxDataStorage, cxEdit, cxNavigator, Data.DB, cxDBData, System.Actions,
   Vcl.ActnList, dxBar, cxClasses, cxGridLevel, cxGridCustomView,
   cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGrid, Table,
-  Datasnap.DBClient;
+  Datasnap.DBClient, dxSkinsCore, dxSkinBlack, dxSkinBlue, dxSkinBlueprint,
+  dxSkinCaramel, dxSkinCoffee, dxSkinDarkRoom, dxSkinDarkSide,
+  dxSkinDevExpressDarkStyle, dxSkinDevExpressStyle, dxSkinFoggy,
+  dxSkinGlassOceans, dxSkinHighContrast, dxSkiniMaginary, dxSkinLilian,
+  dxSkinLiquidSky, dxSkinLondonLiquidSky, dxSkinMcSkin, dxSkinMetropolis,
+  dxSkinMetropolisDark, dxSkinMoneyTwins, dxSkinOffice2007Black,
+  dxSkinOffice2007Blue, dxSkinOffice2007Green, dxSkinOffice2007Pink,
+  dxSkinOffice2007Silver, dxSkinOffice2010Black, dxSkinOffice2010Blue,
+  dxSkinOffice2010Silver, dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray,
+  dxSkinOffice2013White, dxSkinPumpkin, dxSkinSeven, dxSkinSevenClassic,
+  dxSkinSharp, dxSkinSharpPlus, dxSkinSilver, dxSkinSpringTime, dxSkinStardust,
+  dxSkinSummer2008, dxSkinTheAsphaltWorld, dxSkinsDefaultPainters,
+  dxSkinValentine, dxSkinVS2010, dxSkinWhiteprint, dxSkinXmas2008Blue,
+  dxSkinscxPCPainter, dxSkinsdxBarPainter;
 
 type
   TFrmPesquisaGenerica = class(TFrmTelaPadrao)
@@ -28,6 +41,7 @@ type
     FFiltered: Boolean;
   public
     class function SearchTable(ATable: TTable): TTable;
+    class function SearchSQL(ATable: TTable; ASql: String): TTable;
   end;
 
 var
@@ -84,6 +98,44 @@ begin
   end;
   dsPesquisa.DataSet.Filtered := True;
   Close;
+end;
+
+class function TFrmPesquisaGenerica.SearchSQL(ATable: TTable;
+  ASql: String): TTable;
+var
+  i: Integer;
+begin
+  Application.CreateForm(TFrmPesquisaGenerica, FrmPesquisaGenerica);
+  try
+    with FrmPesquisaGenerica do
+    begin
+      dsPesquisa.DataSet := DmDao.Dao.SearchSql(ASql);
+
+      for i := 0 to dsPesquisa.DataSet.FieldCount - 1 do
+      begin
+        dsPesquisa.DataSet.Fields.Fields[i].DisplayLabel := UpperCase(
+          dsPesquisa.DataSet.Fields.Fields[i].DisplayLabel);
+      end;
+
+      cxgvPesquisa.DataController.CreateAllItems();
+      cxgvPesquisa.ApplyBestFit();
+
+      ShowModal;
+
+      if FFiltered then
+      begin
+        ATable := DmDao.Dao.DataSetToTable(ATable, dsPesquisa.DataSet);
+        DmDao.Dao.Read(ATable);
+        Result := ATable;
+      end
+      else
+      begin
+        Result := ATable;
+      end;
+    end;
+  finally
+    FrmPesquisaGenerica.Free;
+  end;
 end;
 
 class function TFrmPesquisaGenerica.SearchTable(ATable: TTable): TTable;

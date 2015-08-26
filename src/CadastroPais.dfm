@@ -1,16 +1,17 @@
 inherited FrmCadastroPais: TFrmCadastroPais
   Caption = 'Cadastro de Pa'#237's'
-  ClientHeight = 104
+  ClientHeight = 99
   ClientWidth = 405
   ExplicitWidth = 421
-  ExplicitHeight = 142
+  ExplicitHeight = 137
   PixelsPerInch = 96
   TextHeight = 13
   inherited pnPrincipal: TPanel
     Width = 405
-    Height = 54
+    Height = 53
+    ExplicitTop = 46
     ExplicitWidth = 405
-    ExplicitHeight = 54
+    ExplicitHeight = 58
     object cxLabel1: TcxLabel
       Left = 16
       Top = 16
@@ -21,7 +22,7 @@ inherited FrmCadastroPais: TFrmCadastroPais
       Top = 15
       AutoSize = False
       Properties.CharCase = ecUpperCase
-      TabOrder = 1
+      TabOrder = 0
       Height = 21
       Width = 328
     end
@@ -32,7 +33,7 @@ inherited FrmCadastroPais: TFrmCadastroPais
     DockControlHeights = (
       0
       0
-      50
+      46
       0)
   end
   inherited alAcoesCadastro: TActionList
