@@ -1,16 +1,13 @@
-inherited FrmCadastroPais: TFrmCadastroPais
-  Caption = 'Cadastro de Pa'#237's'
-  ClientHeight = 99
+inherited FrmCadastroPesquisaGenerica: TFrmCadastroPesquisaGenerica
+  Caption = 'Cadastro das Pesquisas Gen'#233'ricas'
   ClientWidth = 405
   ExplicitWidth = 421
-  ExplicitHeight = 137
   PixelsPerInch = 96
   TextHeight = 13
   inherited pnPrincipal: TPanel
     Width = 405
-    Height = 53
-    ExplicitWidth = 405
-    ExplicitHeight = 53
+    ExplicitLeft = 72
+    ExplicitTop = 70
     object cxLabel1: TcxLabel
       Left = 16
       Top = 16
@@ -21,14 +18,29 @@ inherited FrmCadastroPais: TFrmCadastroPais
       Top = 15
       AutoSize = False
       Properties.CharCase = ecUpperCase
-      TabOrder = 0
+      TabOrder = 1
       Height = 21
+      Width = 328
+    end
+    object cxLabel2: TcxLabel
+      Left = 24
+      Top = 43
+      Caption = 'SQL:'
+    end
+    object mmSql: TcxMemo
+      Left = 57
+      Top = 42
+      Properties.CharCase = ecUpperCase
+      Properties.MaxLength = 8000
+      Properties.ScrollBars = ssVertical
+      TabOrder = 3
+      Height = 143
       Width = 328
     end
   end
   inherited bmControladorBarra: TdxBarManager
-    Left = 192
-    Top = 16
+    Left = 248
+    Top = 0
     DockControlHeights = (
       0
       0
@@ -36,11 +48,11 @@ inherited FrmCadastroPais: TFrmCadastroPais
       0)
   end
   inherited alAcoesCadastro: TActionList
-    Left = 264
-    Top = 16
+    Left = 208
+    Top = 0
   end
   inherited alAcoesGerais: TActionList
-    Left = 320
-    Top = 16
+    Left = 152
+    Top = 0
   end
 end

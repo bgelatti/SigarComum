@@ -3,24 +3,13 @@ unit CadastroEstado;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, CadastroPadrao, System.Actions,
-  Vcl.ActnList, dxBar, cxClasses, Vcl.ExtCtrls, cxGraphics, cxControls,
-  cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit, cxTextEdit,
-  cxLabel, Vcl.Menus, Vcl.StdCtrls, cxButtons, Estado, Pais, PesquisaGenerica,
-  Table, dxSkinsCore, dxSkinBlack, dxSkinBlue, dxSkinBlueprint, dxSkinCaramel,
-  dxSkinCoffee, dxSkinDarkRoom, dxSkinDarkSide, dxSkinDevExpressDarkStyle,
-  dxSkinDevExpressStyle, dxSkinFoggy, dxSkinGlassOceans, dxSkinHighContrast,
-  dxSkiniMaginary, dxSkinLilian, dxSkinLiquidSky, dxSkinLondonLiquidSky,
-  dxSkinMcSkin, dxSkinMetropolis, dxSkinMetropolisDark, dxSkinMoneyTwins,
-  dxSkinOffice2007Black, dxSkinOffice2007Blue, dxSkinOffice2007Green,
-  dxSkinOffice2007Pink, dxSkinOffice2007Silver, dxSkinOffice2010Black,
-  dxSkinOffice2010Blue, dxSkinOffice2010Silver, dxSkinOffice2013DarkGray,
-  dxSkinOffice2013LightGray, dxSkinOffice2013White, dxSkinPumpkin, dxSkinSeven,
-  dxSkinSevenClassic, dxSkinSharp, dxSkinSharpPlus, dxSkinSilver,
-  dxSkinSpringTime, dxSkinStardust, dxSkinSummer2008, dxSkinTheAsphaltWorld,
-  dxSkinsDefaultPainters, dxSkinValentine, dxSkinVS2010, dxSkinWhiteprint,
-  dxSkinXmas2008Blue, dxSkinsdxBarPainter;
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
+  CadastroPadrao, System.Actions, Vcl.ActnList, dxBar, cxClasses,
+  Vcl.ExtCtrls, cxGraphics, cxControls, cxLookAndFeels, dxSkinsCore,
+  dxSkinLilian, dxSkinsdxBarPainter, cxLookAndFeelPainters, cxContainer,
+  cxEdit, Vcl.Menus, Vcl.StdCtrls, cxButtons, cxTextEdit, cxLabel, Table,
+  PesquisaGenerica, Pais, Estado;
 
 type
   TFrmCadastroEstado = class(TFrmCadastroPadrao)
@@ -36,7 +25,7 @@ type
     procedure edtPaisPropertiesEditValueChanged(Sender: TObject);
     procedure ActNovoExecute(Sender: TObject);
     procedure edtPaisKeyPress(Sender: TObject; var Key: Char);
-    procedure ActPesquisarExecute(Sender: TObject);
+    procedure ActAlterarExecute(Sender: TObject);
   private
     { Private declarations }
   public
@@ -57,6 +46,12 @@ uses
   uDmDao;
 
 {$R *.dfm}
+
+procedure TFrmCadastroEstado.ActAlterarExecute(Sender: TObject);
+begin
+  inherited;
+  edtNome.SetFocus;
+end;
 
 procedure TFrmCadastroEstado.ActNovoExecute(Sender: TObject);
 begin
@@ -83,35 +78,15 @@ begin
   end;
 end;
 
-procedure TFrmCadastroEstado.ActPesquisarExecute(Sender: TObject);
-var
-  vSql: String;
-begin
-  vSql := 'SELECT ' +
-          '  A.ID, ' +
-          '  A.NOME, ' +
-          '  B.NOME AS PAIS ' +
-          'FROM ' +
-          '  COMUM.ESTADO A ' +
-          'INNER JOIN COMUM.PAIS B ' +
-          '  ON A.IDPAIS = B.ID ' +
-          'ORDER BY ' +
-          '  A.ID';
-  ConnectionVerify;
-  Table := TFrmPesquisaGenerica.SearchSQL(Table, vSql);
-  if Table <> nil then
-  begin
-    SetFieldsFromSearch;
-  end;
-  SetBrowseMode;
-end;
-
 procedure TFrmCadastroEstado.CleanFields;
 begin
   inherited;
   edtNome.Clear;
   edtPais.Clear;
   lbNomePais.Clear;
+  TEstado(Table).Id       := 0;
+  TEstado(Table).Nome     := '';
+  TEstado(Table).IdPais   := 0;
 end;
 
 procedure TFrmCadastroEstado.edtPaisKeyPress(Sender: TObject; var Key: Char);

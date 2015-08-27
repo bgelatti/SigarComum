@@ -9,9 +9,8 @@ inherited FrmCadastroCidade: TFrmCadastroCidade
   inherited pnPrincipal: TPanel
     Width = 386
     Height = 67
-    ExplicitLeft = -72
-    ExplicitTop = 8
-    ExplicitHeight = 196
+    ExplicitWidth = 386
+    ExplicitHeight = 67
     object lbNomeEstado: TcxLabel
       Left = 130
       Top = 39

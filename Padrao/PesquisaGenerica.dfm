@@ -22,7 +22,6 @@ inherited FrmPesquisaGenerica: TFrmPesquisaGenerica
     LookAndFeel.Kind = lfFlat
     LookAndFeel.NativeStyle = False
     LookAndFeel.SkinName = 'Lilian'
-    ExplicitLeft = 8
     object cxgvPesquisa: TcxGridDBTableView
       OnDblClick = cxgvPesquisaDblClick
       Navigator.Buttons.CustomButtons = <>

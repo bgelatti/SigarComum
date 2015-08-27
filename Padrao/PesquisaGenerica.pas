@@ -9,20 +9,8 @@ uses
   cxData, cxDataStorage, cxEdit, cxNavigator, Data.DB, cxDBData, System.Actions,
   Vcl.ActnList, dxBar, cxClasses, cxGridLevel, cxGridCustomView,
   cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGrid, Table,
-  Datasnap.DBClient, dxSkinsCore, dxSkinBlack, dxSkinBlue, dxSkinBlueprint,
-  dxSkinCaramel, dxSkinCoffee, dxSkinDarkRoom, dxSkinDarkSide,
-  dxSkinDevExpressDarkStyle, dxSkinDevExpressStyle, dxSkinFoggy,
-  dxSkinGlassOceans, dxSkinHighContrast, dxSkiniMaginary, dxSkinLilian,
-  dxSkinLiquidSky, dxSkinLondonLiquidSky, dxSkinMcSkin, dxSkinMetropolis,
-  dxSkinMetropolisDark, dxSkinMoneyTwins, dxSkinOffice2007Black,
-  dxSkinOffice2007Blue, dxSkinOffice2007Green, dxSkinOffice2007Pink,
-  dxSkinOffice2007Silver, dxSkinOffice2010Black, dxSkinOffice2010Blue,
-  dxSkinOffice2010Silver, dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray,
-  dxSkinOffice2013White, dxSkinPumpkin, dxSkinSeven, dxSkinSevenClassic,
-  dxSkinSharp, dxSkinSharpPlus, dxSkinSilver, dxSkinSpringTime, dxSkinStardust,
-  dxSkinSummer2008, dxSkinTheAsphaltWorld, dxSkinsDefaultPainters,
-  dxSkinValentine, dxSkinVS2010, dxSkinWhiteprint, dxSkinXmas2008Blue,
-  dxSkinscxPCPainter, dxSkinsdxBarPainter;
+  Datasnap.DBClient, dxSkinLilian, dxSkinsCore, dxSkinscxPCPainter,
+  dxSkinsdxBarPainter, CadastroPesquisaGenerica;
 
 type
   TFrmPesquisaGenerica = class(TFrmTelaPadrao)
@@ -39,9 +27,9 @@ type
     procedure cxgvPesquisaDblClick(Sender: TObject);
   private
     FFiltered: Boolean;
+    function GetSearchSQL(ATable: TTable): string;
   public
     class function SearchTable(ATable: TTable): TTable;
-    class function SearchSQL(ATable: TTable; ASql: String): TTable;
   end;
 
 var
@@ -50,7 +38,7 @@ var
 implementation
 
 uses
-  uDmDao;
+  uDmDao, PesquisaGenericaSQL;
 
 {$R *.dfm}
 
@@ -100,16 +88,47 @@ begin
   Close;
 end;
 
-class function TFrmPesquisaGenerica.SearchSQL(ATable: TTable;
-  ASql: String): TTable;
+function TFrmPesquisaGenerica.GetSearchSQL(ATable: TTable): string;
+var
+  vPesquisa: TPesquisaGenericaSQL;
+  vReg: Integer;
+begin
+  vPesquisa := TPesquisaGenericaSQL.Create;
+  try
+    vPesquisa.Objeto := UpperCase(ATable.ToString);
+    vReg := DmDao.Dao.Read(vPesquisa);
+
+    if vReg > 0 then
+    begin
+      Result := vPesquisa.SQL;
+    end
+    else
+    begin
+      Result := '';
+    end;
+  finally
+    vPesquisa.Free;
+  end;
+end;
+
+class function TFrmPesquisaGenerica.SearchTable(ATable: TTable): TTable;
 var
   i: Integer;
+  vSql: string;
 begin
   Application.CreateForm(TFrmPesquisaGenerica, FrmPesquisaGenerica);
   try
     with FrmPesquisaGenerica do
     begin
-      dsPesquisa.DataSet := DmDao.Dao.SearchSql(ASql);
+      vSql := GetSearchSQL(ATable);
+      if vSql <> '' then
+      begin
+        dsPesquisa.DataSet := DmDao.Dao.SearchSql(vSql);
+      end
+      else
+      begin
+        dsPesquisa.DataSet := DmDao.Dao.SearchTab(ATable, []);
+      end;
 
       for i := 0 to dsPesquisa.DataSet.FieldCount - 1 do
       begin
@@ -119,7 +138,6 @@ begin
 
       cxgvPesquisa.DataController.CreateAllItems();
       cxgvPesquisa.ApplyBestFit();
-
       ShowModal;
 
       if FFiltered then
@@ -127,41 +145,6 @@ begin
         ATable := DmDao.Dao.DataSetToTable(ATable, dsPesquisa.DataSet);
         DmDao.Dao.Read(ATable);
         Result := ATable;
-      end
-      else
-      begin
-        Result := ATable;
-      end;
-    end;
-  finally
-    FrmPesquisaGenerica.Free;
-  end;
-end;
-
-class function TFrmPesquisaGenerica.SearchTable(ATable: TTable): TTable;
-var
-  i: Integer;
-begin
-  Application.CreateForm(TFrmPesquisaGenerica, FrmPesquisaGenerica);
-  try
-    with FrmPesquisaGenerica do
-    begin
-      dsPesquisa.DataSet := DmDao.Dao.SearchTab(ATable, []);
-
-      for i := 0 to dsPesquisa.DataSet.FieldCount - 1 do
-      begin
-        dsPesquisa.DataSet.Fields.Fields[i].DisplayLabel := UpperCase(
-          dsPesquisa.DataSet.Fields.Fields[i].DisplayLabel);
-      end;
-
-      cxgvPesquisa.DataController.CreateAllItems();
-      cxgvPesquisa.ApplyBestFit();
-
-      ShowModal;
-
-      if FFiltered then
-      begin
-        Result := DmDao.Dao.DataSetToTable(ATable, dsPesquisa.DataSet);
       end
       else
       begin
