@@ -16,14 +16,13 @@ inherited FrmCadastroPais: TFrmCadastroPais
       Top = 16
       Caption = 'Nome:'
     end
-    object edtNome: TcxTextEdit
-      Left = 57
-      Top = 15
-      AutoSize = False
+    object edtNome: TSigarEdit
+      Left = 53
+      Top = 17
       Properties.CharCase = ecUpperCase
-      TabOrder = 0
-      Height = 21
-      Width = 328
+      TabOrder = 1
+      SigarField = 'NOME'
+      Width = 316
     end
   end
   inherited bmControladorBarra: TdxBarManager

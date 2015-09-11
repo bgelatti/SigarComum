@@ -7,22 +7,19 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, CadastroPadrao, System.Actions,
   Vcl.ActnList, dxBar, dxSkinsCore, dxSkinLilian, dxSkinsdxBarPainter,
   cxGraphics, cxControls, cxLookAndFeels, cxLookAndFeelPainters, cxContainer,
-  cxEdit, cxTextEdit, cxLabel, cxClasses, Vcl.ExtCtrls, Pais;
+  cxEdit, cxTextEdit, cxLabel, cxClasses, Vcl.ExtCtrls, Pais, SigarEdit;
 
 type
   TFrmCadastroPais = class(TFrmCadastroPadrao)
     cxLabel1: TcxLabel;
-    edtNome: TcxTextEdit;
+    edtNome: TSigarEdit;
     procedure FormCreate(Sender: TObject);
     procedure ActNovoExecute(Sender: TObject);
     procedure ActAlterarExecute(Sender: TObject);
   private
     { Private declarations }
   public
-    procedure SetTableFields; override;
-    procedure SetFieldsTable; override;
     procedure CleanFields; override;
-    procedure SetFieldsFromSearch; override;
     procedure GetPk; override;
     function VerifyId: Double; override;
   end;
@@ -70,24 +67,6 @@ begin
   inherited;
   ConnectionVerify;
   TPais(Table).Id := DmDao.Dao.GetID(Table, 'id');
-end;
-
-procedure TFrmCadastroPais.SetFieldsFromSearch;
-begin
-  inherited;
-  edtNome.Text := TPais(Table).Nome;
-end;
-
-procedure TFrmCadastroPais.SetFieldsTable;
-begin
-  inherited;
-  edtNome.Text := TPais(Table).Nome;
-end;
-
-procedure TFrmCadastroPais.SetTableFields;
-begin
-  inherited;
-  TPais(Table).Nome := edtNome.Text;
 end;
 
 function TFrmCadastroPais.VerifyId: Double;

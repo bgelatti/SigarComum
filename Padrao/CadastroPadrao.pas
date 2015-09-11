@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, TelaPadrao, Table, System.Actions,
   Vcl.ActnList, dxBar, cxClasses, uDmDao, dxBarExtItems, Data.DB, Vcl.ExtCtrls,
-  dxSkinLilian, dxSkinsCore, dxSkinsdxBarPainter;
+  dxSkinLilian, dxSkinsCore, dxSkinsdxBarPainter, SigarEdit, System.Rtti;
 
 type
   TFrmCadastroPadrao = class(TFrmTelaPadrao)
@@ -45,14 +45,16 @@ type
     procedure RegInsert;
     procedure RegUpdate;
     procedure RegDelete;
+    procedure SetEditField(AField: String; AValor: Variant);
+    function SetFieldEdit(AField: String): Variant;
   public
     procedure ConnectionVerify;
     procedure SetBrowseMode;
     procedure SetEditMode;
-    procedure SetTableFields; virtual; abstract;
-    procedure SetFieldsTable; virtual; abstract;
+    procedure SetTableFields; virtual;
+    procedure SetFieldsTable; virtual;
     procedure CleanFields; virtual; abstract;
-    procedure SetFieldsFromSearch; virtual; abstract;
+    procedure SetFieldsFromSearch; virtual;
     procedure GetPk; virtual; abstract;
     function VerifyId: Double; virtual; abstract;
     property Table: TTable read FTable write SetTable;
@@ -221,6 +223,50 @@ begin
   pnPrincipal.Enabled  := False;
 end;
 
+procedure TFrmCadastroPadrao.SetEditField(AField: String; AValor: Variant);
+var
+  Context: TRttiContext;
+  RttiType: TRttiType;
+  RttiProperty: TRttiProperty;
+begin
+  Context := TRttiContext.Create;
+  try
+    RttiType := Context.GetType(FTable.ClassType);
+    for RttiProperty in RttiType.GetProperties do
+    begin
+      if UpperCase(RttiProperty.Name) = UpperCase(AField) then
+      begin
+        case RttiProperty.PropertyType.TypeKind of
+          tkInt64, tkInteger:
+            begin
+              RttiProperty.SetValue(FTable, Integer(AValor));
+            end;
+          tkChar, tkString, tkUString:
+            begin
+              RttiProperty.SetValue(FTable, String(AValor));
+            end;
+          tkFloat:
+            begin
+              if CompareText(RttiProperty.PropertyType.Name, 'TDateTime') = 0 then
+              begin
+                RttiProperty.SetValue(FTable, TDateTime(AValor));
+              end
+              else
+              begin
+                RttiProperty.SetValue(FTable, Double(AValor));
+              end;
+            end;
+        else
+          raise Exception.Create('Tipo de Campo não conhecido: ' +
+            RttiProperty.PropertyType.ToString);
+        end;
+      end;
+    end;
+  finally
+    Context.Free;
+  end;
+end;
+
 procedure TFrmCadastroPadrao.SetEditMode;
 begin
   ActNovo.Enabled      := False;
@@ -233,9 +279,87 @@ begin
   pnPrincipal.Enabled  := True;
 end;
 
+function TFrmCadastroPadrao.SetFieldEdit(AField: String): Variant;
+var
+  Context: TRttiContext;
+  RttiType: TRttiType;
+  RttiProperty: TRttiProperty;
+begin
+  Result := '';
+  Context := TRttiContext.Create;
+  try
+    RttiType := Context.GetType(FTable.ClassType);
+    for RttiProperty in RttiType.GetProperties do
+    begin
+      if UpperCase(RttiProperty.Name) = UpperCase(AField) then
+      begin
+        case RttiProperty.PropertyType.TypeKind of
+          tkInt64, tkInteger:
+            begin
+              Result := RttiProperty.GetValue(Table).AsInteger;
+            end;
+          tkChar, tkString, tkUString:
+            begin
+              Result := RttiProperty.GetValue(Table).AsString;
+            end;
+          tkFloat:
+            begin
+              if CompareText(RttiProperty.PropertyType.Name, 'TDateTime') = 0 then
+              begin
+                Result := RttiProperty.GetValue(Table).AsType<TDateTime>;
+              end
+              else
+              begin
+                Result := RttiProperty.GetValue(Table).AsCurrency;
+              end;
+            end;
+        else
+          raise Exception.Create('Tipo de Campo não conhecido: ' +
+            RttiProperty.PropertyType.ToString);
+        end;
+      end;
+    end;
+  finally
+    Context.Free;
+  end;
+end;
+
+procedure TFrmCadastroPadrao.SetFieldsFromSearch;
+begin
+  SetFieldsTable;
+end;
+
+procedure TFrmCadastroPadrao.SetFieldsTable;
+var
+  i: Integer;
+begin
+  for i := 0 to Self.ComponentCount - 1 do
+  begin
+    if Self.Components[i].ClassType = TSigarEdit then
+    begin
+      TSigarEdit(Self.Components[i]).Text := String(SetFieldEdit(TSigarEdit(
+        Self.Components[i]).SigarField))
+    end;
+  end;
+end;
+
 procedure TFrmCadastroPadrao.SetTable(const Value: TTable);
 begin
   FTable := Value;
+end;
+
+procedure TFrmCadastroPadrao.SetTableFields;
+var
+  i: Integer;
+begin
+  for i := 0 to Self.ComponentCount - 1 do
+  begin
+    if Self.Components[i].ClassType = TSigarEdit then
+    begin
+      SetEditField(TSigarEdit(Self.Components[i]).SigarField,
+        TSigarEdit(Self.Components[i]).Text);
+    end;
+  end;
 end;
 
 procedure TFrmCadastroPadrao.RegUpdate;
