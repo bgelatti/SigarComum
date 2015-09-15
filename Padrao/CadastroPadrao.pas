@@ -6,7 +6,8 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, TelaPadrao, Table, System.Actions,
   Vcl.ActnList, dxBar, cxClasses, uDmDao, dxBarExtItems, Data.DB, Vcl.ExtCtrls,
-  dxSkinLilian, dxSkinsCore, dxSkinsdxBarPainter, SigarEdit, System.Rtti;
+  dxSkinLilian, dxSkinsCore, dxSkinsdxBarPainter, SigarEdit, System.Rtti,
+  SigarMemo;
 
 type
   TFrmCadastroPadrao = class(TFrmTelaPadrao)
@@ -51,10 +52,10 @@ type
     procedure ConnectionVerify;
     procedure SetBrowseMode;
     procedure SetEditMode;
-    procedure SetTableFields; virtual;
-    procedure SetFieldsTable; virtual;
+    procedure SetTableFields;
+    procedure SetFieldsTable;
     procedure CleanFields; virtual; abstract;
-    procedure SetFieldsFromSearch; virtual;
+    procedure SetFieldsFromSearch;
     procedure GetPk; virtual; abstract;
     function VerifyId: Double; virtual; abstract;
     property Table: TTable read FTable write SetTable;
@@ -339,6 +340,11 @@ begin
     begin
       TSigarEdit(Self.Components[i]).Text := String(SetFieldEdit(TSigarEdit(
         Self.Components[i]).SigarField))
+    end
+    else if Self.Components[i].ClassType = TSigarMemo then
+    begin
+      TSigarMemo(Self.Components[i]).Text := String(SetFieldEdit(TSigarMemo(
+        Self.Components[i]).SigarField))
     end;
   end;
 end;
@@ -358,6 +364,11 @@ begin
     begin
       SetEditField(TSigarEdit(Self.Components[i]).SigarField,
         TSigarEdit(Self.Components[i]).Text);
+    end
+    else if Self.Components[i].ClassType = TSigarMemo then
+    begin
+      SetEditField(TSigarMemo(Self.Components[i]).SigarField,
+        TSigarMemo(Self.Components[i]).Text);
     end;
   end;
 end;

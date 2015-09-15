@@ -25,7 +25,7 @@ inherited FrmCadastroCidade: TFrmCadastroCidade
       LookAndFeel.SkinName = ''
       TabOrder = 2
     end
-    object edtEstado: TcxTextEdit
+    object edtEstado: TSigarEdit
       Left = 56
       Top = 38
       AutoSize = False
@@ -33,6 +33,7 @@ inherited FrmCadastroCidade: TFrmCadastroCidade
       Properties.OnEditValueChanged = edtEstadoPropertiesEditValueChanged
       TabOrder = 1
       OnKeyPress = edtEstadoKeyPress
+      SigarField = 'IDESTADO'
       Height = 21
       Width = 40
     end
@@ -46,12 +47,13 @@ inherited FrmCadastroCidade: TFrmCadastroCidade
       Top = 15
       Caption = 'Nome:'
     end
-    object edtNome: TcxTextEdit
+    object edtNome: TSigarEdit
       Left = 56
       Top = 12
       AutoSize = False
       Properties.CharCase = ecUpperCase
       TabOrder = 0
+      SigarField = 'NOME'
       Height = 21
       Width = 312
     end

@@ -21,16 +21,17 @@ inherited FrmCadastroEstado: TFrmCadastroEstado
       Top = 41
       Caption = 'Pa'#237's:'
     end
-    object edtNome: TcxTextEdit
+    object edtNome: TSigarEdit
       Left = 57
       Top = 11
       AutoSize = False
       Properties.CharCase = ecUpperCase
       TabOrder = 0
+      SigarField = 'NOME'
       Height = 21
       Width = 312
     end
-    object edtPais: TcxTextEdit
+    object edtPais: TSigarEdit
       Left = 57
       Top = 40
       AutoSize = False
@@ -38,6 +39,7 @@ inherited FrmCadastroEstado: TFrmCadastroEstado
       Properties.OnEditValueChanged = edtPaisPropertiesEditValueChanged
       TabOrder = 1
       OnKeyPress = edtPaisKeyPress
+      SigarField = 'IDPAIS'
       Height = 21
       Width = 40
     end

@@ -9,14 +9,14 @@ uses
   Vcl.ExtCtrls, cxGraphics, cxControls, cxLookAndFeels, dxSkinsCore,
   dxSkinLilian, dxSkinsdxBarPainter, cxLookAndFeelPainters, cxContainer,
   cxEdit, Vcl.Menus, Vcl.StdCtrls, cxButtons, cxTextEdit, cxLabel, Table,
-  PesquisaGenerica, Pais, Estado;
+  PesquisaGenerica, Pais, Estado, SigarEdit;
 
 type
   TFrmCadastroEstado = class(TFrmCadastroPadrao)
     cxLabel1: TcxLabel;
     cxLabel2: TcxLabel;
-    edtNome: TcxTextEdit;
-    edtPais: TcxTextEdit;
+    edtNome: TSigarEdit;
+    edtPais: TSigarEdit;
     ActPesquisaPais: TAction;
     lbNomePais: TcxLabel;
     btnPesquisaPais: TcxButton;
@@ -29,10 +29,7 @@ type
   private
     { Private declarations }
   public
-    procedure SetTableFields; override;
-    procedure SetFieldsTable; override;
     procedure CleanFields; override;
-    procedure SetFieldsFromSearch; override;
     procedure GetPk; override;
     function VerifyId: Double; override;
   end;
@@ -131,27 +128,6 @@ procedure TFrmCadastroEstado.GetPk;
 begin
   inherited;
   TEstado(Table).Id := DmDao.Dao.GetID(Table, 'id');
-end;
-
-procedure TFrmCadastroEstado.SetFieldsFromSearch;
-begin
-  inherited;
-  edtNome.Text := TEstado(Table).Nome;
-  edtPais.Text := FloatToStr(TEstado(Table).IdPais);
-end;
-
-procedure TFrmCadastroEstado.SetFieldsTable;
-begin
-  inherited;
-  edtNome.Text := TEstado(Table).Nome;
-  edtPais.Text := FloatToStr(TEstado(Table).IdPais);
-end;
-
-procedure TFrmCadastroEstado.SetTableFields;
-begin
-  inherited;
-  TEstado(Table).Nome   := edtNome.Text;
-  TEstado(Table).IdPais := StrToFloatDef(edtPais.Text, 0);
 end;
 
 function TFrmCadastroEstado.VerifyId: Double;

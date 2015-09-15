@@ -9,17 +9,17 @@ uses
   dxSkinsCore, dxSkinsdxBarPainter, cxGraphics, cxControls, cxLookAndFeels,
   cxLookAndFeelPainters, cxContainer, cxEdit, Vcl.Menus, cxTextEdit,
   Vcl.StdCtrls, cxButtons, cxLabel, System.Actions, Vcl.ActnList, dxBar,
-  cxClasses, Vcl.ExtCtrls;
+  cxClasses, Vcl.ExtCtrls, SigarEdit;
 
 type
   TFrmCadastroCidade = class(TFrmCadastroPadrao)
     ActPesquisaEstado: TAction;
     lbNomeEstado: TcxLabel;
     btnPesquisaEstado: TcxButton;
-    edtEstado: TcxTextEdit;
+    edtEstado: TSigarEdit;
     cxLabel2: TcxLabel;
     cxLabel1: TcxLabel;
-    edtNome: TcxTextEdit;
+    edtNome: TSigarEdit;
     procedure ActPesquisaEstadoExecute(Sender: TObject);
     procedure ActNovoExecute(Sender: TObject);
     procedure edtEstadoKeyPress(Sender: TObject; var Key: Char);
@@ -29,10 +29,7 @@ type
   private
     { Private declarations }
   public
-    procedure SetTableFields; override;
-    procedure SetFieldsTable; override;
     procedure CleanFields; override;
-    procedure SetFieldsFromSearch; override;
     procedure GetPk; override;
     function VerifyId: Double; override;
   end;
@@ -132,27 +129,6 @@ procedure TFrmCadastroCidade.GetPk;
 begin
   inherited;
   TCidade(Table).Id := DmDao.Dao.GetID(Table, 'id');
-end;
-
-procedure TFrmCadastroCidade.SetFieldsFromSearch;
-begin
-  inherited;
-  edtNome.Text   := TCidade(Table).Nome;
-  edtEstado.Text := FloatToStr(TCidade(Table).IdEstado);
-end;
-
-procedure TFrmCadastroCidade.SetFieldsTable;
-begin
-  inherited;
-  edtNome.Text   := TCidade(Table).Nome;
-  edtEstado.Text := FloatToStr(TCidade(Table).IdEstado);
-end;
-
-procedure TFrmCadastroCidade.SetTableFields;
-begin
-  inherited;
-  TCidade(Table).Nome     := edtNome.Text;
-  TCidade(Table).IdEstado := StrToFloatDef(edtEstado.Text, 0);
 end;
 
 function TFrmCadastroCidade.VerifyId: Double;

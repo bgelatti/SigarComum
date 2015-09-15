@@ -8,23 +8,20 @@ uses
   dxSkinLilian, dxSkinsdxBarPainter, System.Actions, Vcl.ActnList, dxBar,
   cxClasses, Vcl.ExtCtrls, PesquisaGenericaSQL, cxGraphics, cxControls,
   cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit, cxMemo,
-  cxTextEdit, cxLabel, uDmDao;
+  cxTextEdit, cxLabel, uDmDao, SigarEdit, SigarMemo;
 
 type
   TFrmCadastroPesquisaGenerica = class(TFrmCadastroPadrao)
     cxLabel1: TcxLabel;
-    edtNome: TcxTextEdit;
+    edtNome: TSigarEdit;
     cxLabel2: TcxLabel;
-    mmSql: TcxMemo;
+    mmSql: TSigarMemo;
     procedure FormCreate(Sender: TObject);
     procedure ActNovoExecute(Sender: TObject);
   private
     { Private declarations }
   public
-    procedure SetTableFields; override;
-    procedure SetFieldsTable; override;
     procedure CleanFields; override;
-    procedure SetFieldsFromSearch; override;
     procedure GetPk; override;
     function VerifyId: Double; override;
   end;
@@ -65,27 +62,6 @@ begin
   inherited;
   ConnectionVerify;
   TPesquisaGenericaSQL(Table).Id := DmDao.Dao.GetID(Table, 'id');
-end;
-
-procedure TFrmCadastroPesquisaGenerica.SetFieldsFromSearch;
-begin
-  inherited;
-  edtNome.Text := TPesquisaGenericaSQL(Table).Objeto;
-  mmSql.Text   := TPesquisaGenericaSQL(Table).SQL;
-end;
-
-procedure TFrmCadastroPesquisaGenerica.SetFieldsTable;
-begin
-  inherited;
-  edtNome.Text := TPesquisaGenericaSQL(Table).Objeto;
-  mmSql.Text   := TPesquisaGenericaSQL(Table).SQL;
-end;
-
-procedure TFrmCadastroPesquisaGenerica.SetTableFields;
-begin
-  inherited;
-  TPesquisaGenericaSQL(Table).Objeto := edtNome.Text;
-  TPesquisaGenericaSQL(Table).SQL    := mmSql.Text;
 end;
 
 function TFrmCadastroPesquisaGenerica.VerifyId: Double;

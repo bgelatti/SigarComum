@@ -6,19 +6,19 @@ inherited FrmCadastroPesquisaGenerica: TFrmCadastroPesquisaGenerica
   TextHeight = 13
   inherited pnPrincipal: TPanel
     Width = 405
-    ExplicitLeft = 72
-    ExplicitTop = 70
+    ExplicitWidth = 405
     object cxLabel1: TcxLabel
       Left = 16
       Top = 16
       Caption = 'Nome:'
     end
-    object edtNome: TcxTextEdit
+    object edtNome: TSigarEdit
       Left = 57
       Top = 15
       AutoSize = False
       Properties.CharCase = ecUpperCase
       TabOrder = 1
+      SigarField = 'OBJETO'
       Height = 21
       Width = 328
     end
@@ -27,13 +27,14 @@ inherited FrmCadastroPesquisaGenerica: TFrmCadastroPesquisaGenerica
       Top = 43
       Caption = 'SQL:'
     end
-    object mmSql: TcxMemo
+    object mmSql: TSigarMemo
       Left = 57
       Top = 42
       Properties.CharCase = ecUpperCase
       Properties.MaxLength = 8000
       Properties.ScrollBars = ssVertical
       TabOrder = 3
+      SigarField = 'SQL'
       Height = 143
       Width = 328
     end
