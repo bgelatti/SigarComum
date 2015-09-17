@@ -78,8 +78,6 @@ end;
 procedure TFrmCadastroCidade.CleanFields;
 begin
   inherited;
-  edtNome.Clear;
-  edtEstado.Clear;
   lbNomeEstado.Clear;
   TCidade(Table).Id       := 0;
   TCidade(Table).Nome     := '';

@@ -44,8 +44,6 @@ end;
 procedure TFrmCadastroPesquisaGenerica.CleanFields;
 begin
   inherited;
-  edtNome.Clear;
-  mmSql.Clear;
   TPesquisaGenericaSQL(Table).Id     := 0;
   TPesquisaGenericaSQL(Table).Objeto := '';
   TPesquisaGenericaSQL(Table).SQL    := '';

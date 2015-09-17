@@ -12,17 +12,17 @@ inherited FrmCadastroPais: TFrmCadastroPais
     ExplicitWidth = 405
     ExplicitHeight = 53
     object cxLabel1: TcxLabel
-      Left = 16
-      Top = 16
+      Left = 10
+      Top = 6
       Caption = 'Nome:'
     end
     object edtNome: TSigarEdit
-      Left = 53
-      Top = 17
+      Left = 10
+      Top = 21
       Properties.CharCase = ecUpperCase
       TabOrder = 1
       SigarField = 'NOME'
-      Width = 316
+      Width = 359
     end
   end
   inherited bmControladorBarra: TdxBarManager

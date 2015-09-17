@@ -7,7 +7,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, TelaPadrao, Table, System.Actions,
   Vcl.ActnList, dxBar, cxClasses, uDmDao, dxBarExtItems, Data.DB, Vcl.ExtCtrls,
   dxSkinLilian, dxSkinsCore, dxSkinsdxBarPainter, SigarEdit, System.Rtti,
-  SigarMemo;
+  SigarMemo, SigarMask;
 
 type
   TFrmCadastroPadrao = class(TFrmTelaPadrao)
@@ -54,7 +54,7 @@ type
     procedure SetEditMode;
     procedure SetTableFields;
     procedure SetFieldsTable;
-    procedure CleanFields; virtual; abstract;
+    procedure CleanFields; virtual;
     procedure SetFieldsFromSearch;
     procedure GetPk; virtual; abstract;
     function VerifyId: Double; virtual; abstract;
@@ -155,6 +155,27 @@ begin
   SetBrowseMode;
   FInserting := False;
   FUpdating  := False;
+end;
+
+procedure TFrmCadastroPadrao.CleanFields;
+var
+  i: Integer;
+begin
+  for i := 0 to Self.ComponentCount - 1 do
+  begin
+    if Self.Components[i].ClassType = TSigarEdit then
+    begin
+      TSigarEdit(Self.Components[i]).Clear;
+    end
+    else if Self.Components[i].ClassType = TSigarMemo then
+    begin
+      TSigarMemo(Self.Components[i]).Clear;
+    end
+    else if Self.Components[i].ClassType = TSigarMask then
+    begin
+      TSigarMask(Self.Components[i]).Clear;
+    end;
+  end;
 end;
 
 procedure TFrmCadastroPadrao.ConnectionVerify;
@@ -339,12 +360,17 @@ begin
     if Self.Components[i].ClassType = TSigarEdit then
     begin
       TSigarEdit(Self.Components[i]).Text := String(SetFieldEdit(TSigarEdit(
-        Self.Components[i]).SigarField))
+        Self.Components[i]).SigarField));
     end
     else if Self.Components[i].ClassType = TSigarMemo then
     begin
       TSigarMemo(Self.Components[i]).Text := String(SetFieldEdit(TSigarMemo(
-        Self.Components[i]).SigarField))
+        Self.Components[i]).SigarField));
+    end
+    else if Self.Components[i].ClassType = TSigarMask then
+    begin
+      TSigarMask(Self.Components[i]).Text := String(SetFieldEdit(TSigarMask(
+        Self.Components[i]).SigarField));
     end;
   end;
 end;
@@ -369,6 +395,11 @@ begin
     begin
       SetEditField(TSigarMemo(Self.Components[i]).SigarField,
         TSigarMemo(Self.Components[i]).Text);
+    end
+    else if Self.Components[i].ClassType = TSigarMask then
+    begin
+      SetEditField(TSigarMask(Self.Components[i]).SigarField,
+        TSigarMask(Self.Components[i]).Text);
     end;
   end;
 end;

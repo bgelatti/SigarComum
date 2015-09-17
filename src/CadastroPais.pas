@@ -51,7 +51,6 @@ end;
 procedure TFrmCadastroPais.CleanFields;
 begin
   inherited;
-  edtNome.Clear;
   TPais(Table).Id   := 0;
   TPais(Table).Nome := '';
 end;

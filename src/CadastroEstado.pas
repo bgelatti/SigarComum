@@ -78,8 +78,6 @@ end;
 procedure TFrmCadastroEstado.CleanFields;
 begin
   inherited;
-  edtNome.Clear;
-  edtPais.Clear;
   lbNomePais.Clear;
   TEstado(Table).Id       := 0;
   TEstado(Table).Nome     := '';

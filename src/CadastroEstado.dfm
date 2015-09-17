@@ -1,39 +1,39 @@
 inherited FrmCadastroEstado: TFrmCadastroEstado
   Caption = 'Cadastro de Estados'
-  ClientHeight = 115
+  ClientHeight = 137
   ClientWidth = 408
   ExplicitWidth = 424
-  ExplicitHeight = 153
+  ExplicitHeight = 175
   PixelsPerInch = 96
   TextHeight = 13
   inherited pnPrincipal: TPanel
     Width = 408
-    Height = 69
+    Height = 91
     ExplicitWidth = 408
-    ExplicitHeight = 69
+    ExplicitHeight = 91
     object cxLabel1: TcxLabel
-      Left = 16
-      Top = 12
+      Left = 8
+      Top = 5
       Caption = 'Nome:'
     end
     object cxLabel2: TcxLabel
-      Left = 24
-      Top = 41
+      Left = 8
+      Top = 46
       Caption = 'Pa'#237's:'
     end
     object edtNome: TSigarEdit
-      Left = 57
-      Top = 11
+      Left = 8
+      Top = 21
       AutoSize = False
       Properties.CharCase = ecUpperCase
       TabOrder = 0
       SigarField = 'NOME'
       Height = 21
-      Width = 312
+      Width = 385
     end
     object edtPais: TSigarEdit
-      Left = 57
-      Top = 40
+      Left = 8
+      Top = 61
       AutoSize = False
       Properties.CharCase = ecUpperCase
       Properties.OnEditValueChanged = edtPaisPropertiesEditValueChanged
@@ -44,12 +44,12 @@ inherited FrmCadastroEstado: TFrmCadastroEstado
       Width = 40
     end
     object lbNomePais: TcxLabel
-      Left = 131
-      Top = 41
+      Left = 82
+      Top = 62
     end
     object btnPesquisaPais: TcxButton
-      Left = 102
-      Top = 40
+      Left = 53
+      Top = 61
       Width = 23
       Height = 21
       Action = ActPesquisaPais
